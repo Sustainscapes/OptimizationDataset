@@ -19,6 +19,11 @@ knitr::opts_chunk$set(
 
 # Español
 
+## Aviso legal
+
+Este repositorio contiene un borrador de conjunto de datos que se encuentra actualmente en desarrollo y aún no está listo para su publicación. El conjunto de datos se proporciona con fines educativos y de investigación en el contexto del curso asociado.
+Los usuarios tienen permitido utilizar el conjunto de datos solo para estos fines específicos y deben dar el crédito correspondiente a los autores originales. Cualquier uso de este conjunto de datos para fines comerciales o de publicación está estrictamente prohibido sin el permiso expreso por escrito de los autores originales. El conjunto de datos se proporciona "tal cual", sin garantía alguna, y los autores no son responsables de ningún problema o daño que pueda surgir de su uso.
+
 ## Resumen del problema
 
 En respuesta a la nueva ley europea de restauración, que exige la recuperación del 20% de la naturaleza degradada, nuestro proyecto se centra en optimizar dos aspectos clave: identificar las áreas prioritarias para la restauración en Europa y determinar los tipos de ecosistemas que deben ser restaurados en cada área. Dinamarca se utilizará como caso de estudio.
@@ -78,66 +83,54 @@ El modelo AMPL define conjuntos, parámetros y variables para capturar la estruc
 
 El objetivo es maximizar el Índice de Conservación, incorporando métricas de biodiversidad y contigüidad espacial:
 
-$\[
-\begin{aligned}
+$\begin{aligned}
 \text{maximize } & \sum_{l \in \text{Landuses}, c \in \text{Cells}} \text{LanduseDecision}[l,c] \times \text{Richness}[l,c] \times \text{PhyloDiversity}[l,c] \times \text{CanChange}[c] \\
 & + \text{SpatialContiguityBonus} \times \sum_{(i,j) \in E, l \in \text{Landuses}} \left( \text{Contiguity}[l,i,j] \times \text{CanChange}[i] \times \text{CanChange}[j] + \text{Existingnature}[l,i] \times \text{LanduseDecision}[l,j] \times \text{CanChange}[j] \right)
-\end{aligned}
-\]$
+\end{aligned}$
 
 ##### Restricciones
 
 1.**Uso proporcional**: garantiza solo un uso de suelo por celda.
 
-$\[
-    \sum_{l \in \text{Landuses}} \text{LanduseDecision}[l,c] \leq 1 \quad \forall c \in \text{Cells}
-    \]$
+$\sum_{l \in \text{Landuses}} \text{LanduseDecision}[l,c] \leq 1 \quad \forall c \in \text{Cells}$
 
 2. **Requisito de area mínimo de uso de suelo**: Garantiza un área mínima para cada tipo de uso de suelo (excluyendo la agricultura).
 
-$\[
-    \sum_{c \in \text{Cells}} \text{LanduseDecision}[l,c] \geq \text{MinLan} \quad \forall l \in \text{Landuses} \setminus \{ \text{'Ag'} \}
-    \]$
+$\sum_{c \in \text{Cells}} \text{LanduseDecision}[l,c] \geq \text{MinLan} \quad \forall l \in \text{Landuses} \setminus \{ \text{'Ag'} \}$
 
 3. **Sin Agricultura**: Evita la selección del uso de suelo agrícola.
 
-$\[
-    \text{LanduseDecision}[\text{'Ag'}, c] = 0 \quad \forall c \in \text{Cells}
-    \]$
+$\text{LanduseDecision}[\text{'Ag'}, c] = 0 \quad \forall c \in \text{Cells}$
 
 4. **Área Forestal Mínima**: Garantiza un área mínima para usos de tierras de bosque.
 
-$\[
-    \sum_{c \in \text{Cells}, l \in \text{ForestLanduses}} \text{LanduseDecision}[l,c] \geq \text{MinFor}
-    \]$
+$\sum_{c \in \text{Cells}, l \in \text{ForestLanduses}} \text{LanduseDecision}[l,c] \geq \text{MinFor}$
 
 5. **Área mínima de humedal**: Garantiza un área mínima para usos de humedales.
 
-$\[
-    \sum_{c \in \text{Cells}, l \in \text{WetLanduses}} \text{LanduseDecision}[l,c] \geq \text{MinWet}
-    \]$
+$\sum_{c \in \text{Cells}, l \in \text{WetLanduses}} \text{LanduseDecision}[l,c] \geq \text{MinWet}$
 
 6. **Restricción presupuestaria**: limita el costo total del presupuesto de transiciones.
 
-$\[
-    \sum_{l \in \text{Landuses}, c \in \text{Cells}} \text{LanduseDecision}[l,c] \times \text{TransitionCost}[l,c] = b
-    \]$
+$\sum_{l \in \text{Landuses}, c \in \text{Cells}} \text{LanduseDecision}[l,c] \times \text{TransitionCost}[l,c] = b$
 
 7. **Definir contigüidad**: define relaciones de contigüidad.
 
-$\[
-    \begin{aligned}
+$\begin{aligned}
     \text{Contiguity}[l,i,j] &\leq \text{LanduseDecision}[l,i] \quad \forall l \in \text{Landuses}, (i,j) \in E \\
     \text{Contiguity}[l,i,j] &\leq \text{LanduseDecision}[l,j] \quad \forall l \in \text{Landuses}, (i,j) \in E \\
     \text{Contiguity}[l,i,j] &\geq \text{LanduseDecision}[l,i] + \text{LanduseDecision}[l,j] - 1 \quad \forall l \in \text{Landuses}, (i,j) \in E
-    \end{aligned}
-    \]$
+    \end{aligned}$
 
 #### Resumen
 
 Este modelo captura la complejidad de la selección de tierras agrícolas para la conservación de la biodiversidad, incorporando múltiples factores ecológicos y económicos. El uso de variables binarias y restricciones garantiza una solución factible y práctica que se alinea con los objetivos de conservación de Dinamarca.
 
 # English
+
+## Disclaimer
+
+This repository contains a draft dataset that is currently under development and not yet ready for publication. The dataset is provided for educational and research purposes within the context of the associated course. Users are permitted to use the dataset only for these specified purposes and must give appropriate credit to the original author(s). Any use of this dataset for publication or commercial purposes is strictly prohibited without the express written permission of the original author(s). The dataset is provided "as is" without any warranty, and the authors are not responsible for any issues or damages that may arise from its use.
 
 ## Problem summary
 
@@ -161,3 +154,45 @@ The aim is to protect 30% of nature in Denmark by optimising the selection of ag
 * Open-Dry-Poor
 * Open-Wet-Rich
 * Open-Wet-Poor
+
+## Problem Summary
+
+These types of environments are defined by three main factors: transformation into forest or open, determined by management; dry or wet, which depends mainly on topography; and rich or poor, related to nutrients in the soil. The goal is to maximize biodiversity, ensure spatial connectivity, and meet specific land use objectives.
+
+Included in the land use restrictions are 250,000 hectares of new forest promised by the new government, which can be wet or dry, and 140,000 hectares of wet areas, which can be open or forest.
+
+#### Description of the model in AMPL
+
+The AMPL model defines sets, parameters, and variables to capture the structure and constraints of the problem. A detailed breakdown is included below:
+
+##### Sets and Parameters
+
+- `Cells`: Set of agricultural cells.
+- `Landuses`: Set of land uses.
+- `ForestLanduses`: Subset of land uses that are forest.
+- `WetLanduses`: Subset of land uses that are wetlands.
+- `E`: Set of adjacent cells (i, j) indicating potential contiguity.
+- `Existingnature[Landuses, Cells]`: Indicates whether a cell is currently of a specific nature type.
+- `Richness[Landuses, Cells]`: Biodiversity value (species richness) for each cell and land use type.
+- `PhyloDiversity[Landuses, Cells]`: Phylogenetic diversity for each land use and cell.
+- `TransitionCost[Landuses, Cells]`: Cost of transforming an agricultural cell to a specific land use type.
+- `CanChange[Cells]`: Indicates whether a cell can be changed (Agricultural cells).
+- `b`: Budget constraint for the cost of transitions.
+- `MinFor`: Minimum area required for new forests.
+- `MinWet`: Minimum area required for new wetlands.
+- `MinLan`: Minimum area required for each land use except agriculture.
+- `SpatialContiguityBonus`: Bonus for creating contiguous areas of the same land use.
+
+##### Variables
+
+- `LanduseDecision[l in Landuses, c in Cells]`: Binary variable indicating whether land use `l` is selected for cell `c`.
+- `Contiguity[l in Landuses, (i,j) in E]`: Binary variable indicating whether cells `i` and `j` are contiguous for land use `l`.
+
+##### Objective function
+
+The objective is to maximize the Conservation Index, incorporating biodiversity and spatial contiguity metrics:
+
+$\begin{aligned}
+\text{maximize } & \sum_{l \in \text{Landuses}, c \in \text{Cells}} \text{LanduseDecision}[l,c] \times \text{Richness}[l,c] \times \text{PhyloDiversity}[l,c] \times \text{CanChange}[c] \\
+& + \text{SpatialContiguityBonus} \times \sum_{(i,j) \in E, l \in \text{Landuses}} \left( \text{Contiguity}[l,i,j] \times \text{CanChange}[i] \times \text{CanChange}[j] + \text{Existingnature}[l,i] \times \text{LanduseDecision}[l,j] \times \text{CanChange}[j] \right)
+\end{aligned}$
