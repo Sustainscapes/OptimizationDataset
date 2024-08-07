@@ -311,3 +311,43 @@ biodiversity and spatial contiguity metrics:
 \text{maximize } & \sum_{l \in \text{Landuses}, c \in \text{Cells}} \text{LanduseDecision}[l,c] \times \text{Richness}[l,c] \times \text{PhyloDiversity}[l,c] \times \text{CanChange}[c] \\
 & + \text{SpatialContiguityBonus} \times \sum_{(i,j) \in E, l \in \text{Landuses}} \left( \text{Contiguity}[l,i,j] \times \text{CanChange}[i] \times \text{CanChange}[j] + \text{Existingnature}[l,i] \times \text{LanduseDecision}[l,j] \times \text{CanChange}[j] \right)
 \end{aligned}")
+
+##### 2.3.0.1.4 Restrictions
+
+1.  **Proportional Use**: Guarantees only one land use per cell.
+
+![\sum\_{l \in \text{Landuses}} \text{LanduseDecision}\[l,c\] \leq 1 \quad \forall c \in \text{Cells}](https://latex.codecogs.com/png.latex?%5Csum_%7Bl%20%5Cin%20%5Ctext%7BLanduses%7D%7D%20%5Ctext%7BLanduseDecision%7D%5Bl%2Cc%5D%20%5Cleq%201%20%5Cquad%20%5Cforall%20c%20%5Cin%20%5Ctext%7BCells%7D "\sum_{l \in \text{Landuses}} \text{LanduseDecision}[l,c] \leq 1 \quad \forall c \in \text{Cells}")
+
+2.  **Minimum Land Use Area Requirement**: Guarantees a minimum area for
+    each land use type (excluding agriculture).
+
+![\sum\_{c \in \text{Cells}} \text{LanduseDecision}\[l,c\] \geq \text{MinLan} \quad \forall l \in \text{Landuses} \setminus \\ \text{'Ag'} \\](https://latex.codecogs.com/png.latex?%5Csum_%7Bc%20%5Cin%20%5Ctext%7BCells%7D%7D%20%5Ctext%7BLanduseDecision%7D%5Bl%2Cc%5D%20%5Cgeq%20%5Ctext%7BMinLan%7D%20%5Cquad%20%5Cforall%20l%20%5Cin%20%5Ctext%7BLanduses%7D%20%5Csetminus%20%5C%7B%20%5Ctext%7B%27Ag%27%7D%20%5C%7D "\sum_{c \in \text{Cells}} \text{LanduseDecision}[l,c] \geq \text{MinLan} \quad \forall l \in \text{Landuses} \setminus \{ \text{'Ag'} \}")
+
+3.  **No Agriculture**: Prevents selection of agricultural land use.
+
+![\text{LanduseDecision}\[\text{'Ag'}, c\] = 0 \quad \forall c \in \text{Cells}](https://latex.codecogs.com/png.latex?%5Ctext%7BLanduseDecision%7D%5B%5Ctext%7B%27Ag%27%7D%2C%20c%5D%20%3D%200%20%5Cquad%20%5Cforall%20c%20%5Cin%20%5Ctext%7BCells%7D "\text{LanduseDecision}[\text{'Ag'}, c] = 0 \quad \forall c \in \text{Cells}")
+
+4.  **Minimum Forest Area**: Guarantee a minimum area for forest land
+    uses.
+
+![\sum \_{c \in \text{Cells}, l \in \text{ForestLanduses}} \text{LanduseDecision}\[l,c\] \geq \text{MinFor}](https://latex.codecogs.com/png.latex?%5Csum%20_%7Bc%20%5Cin%20%5Ctext%7BCells%7D%2C%20l%20%5Cin%20%5Ctext%7BForestLanduses%7D%7D%20%5Ctext%7BLanduseDecision%7D%5Bl%2Cc%5D%20%5Cgeq%20%5Ctext%7BMinFor%7D "\sum _{c \in \text{Cells}, l \in \text{ForestLanduses}} \text{LanduseDecision}[l,c] \geq \text{MinFor}")
+
+5.  **Minimum Wetland Area**: Ensures a minimum area for wetland uses.
+
+![\sum \_{c \in \text{Cells}, l \in \text{WetLanduses}} \text{LanduseDecision}\[l,c\] \geq \text{MinWet}](https://latex.codecogs.com/png.latex?%5Csum%20_%7Bc%20%5Cin%20%5Ctext%7BCells%7D%2C%20l%20%5Cin%20%5Ctext%7BWetLanduses%7D%7D%20%5Ctext%7BLanduseDecision%7D%5Bl%2Cc%5D%20%5Cgeq%20%5Ctext%7BMinWet%7D "\sum _{c \in \text{Cells}, l \in \text{WetLanduses}} \text{LanduseDecision}[l,c] \geq \text{MinWet}")
+
+6.  **Budget Constraint**: Limits the total cost of the transitions
+    budget.
+
+![\sum \_{l \in \text{Landuses}, c \in \text{Cells}} \text{LanduseDecision}\[l,c\] \times \text{TransitionCost}\[l,c\] = b](https://latex.codecogs.com/png.latex?%5Csum%20_%7Bl%20%5Cin%20%5Ctext%7BLanduses%7D%2C%20c%20%5Cin%20%5Ctext%7BCells%7D%7D%20%5Ctext%7BLanduseDecision%7D%5Bl%2Cc%5D%20%5Ctimes%20%5Ctext%7BTransitionCost%7D%5Bl%2Cc%5D%20%3D%20b "\sum _{l \in \text{Landuses}, c \in \text{Cells}} \text{LanduseDecision}[l,c] \times \text{TransitionCost}[l,c] = b")
+7. **Define contiguity**: defines contiguity relationships.
+
+![\begin{aligned} \text{Contiguity}\[l,i,j\] &\leq \text{LanduseDecision}\[l,i\] \quad \forall l \in \text{Landuses}, (i,j) \in E \\ \text{Contiguity}\[l,i,j\] &\leq \text{LanduseDecision}\[l,j\] \quad \forall l \in \text{Landuses}, j) \in E \\ \text{Contiguity}\[l,i,j\] &\geq \text{LanduseDecision}\[l,i\] + \text{LanduseDecision}\[l,j\] - 1 \quad \forall l \in \text{Landuses}, (i,j) \in E \end{aligned}](https://latex.codecogs.com/png.latex?%5Cbegin%7Baligned%7D%20%5Ctext%7BContiguity%7D%5Bl%2Ci%2Cj%5D%20%26%5Cleq%20%5Ctext%7BLanduseDecision%7D%5Bl%2Ci%5D%20%5Cquad%20%5Cforall%20l%20%5Cin%20%5Ctext%7BLanduses%7D%2C%20%28i%2Cj%29%20%5Cin%20E%20%5C%5C%20%5Ctext%7BContiguity%7D%5Bl%2Ci%2Cj%5D%20%26%5Cleq%20%5Ctext%7BLanduseDecision%7D%5Bl%2Cj%5D%20%5Cquad%20%5Cforall%20l%20%5Cin%20%5Ctext%7BLanduses%7D%2C%20j%29%20%5Cin%20E%20%5C%5C%20%5Ctext%7BContiguity%7D%5Bl%2Ci%2Cj%5D%20%26%5Cgeq%20%5Ctext%7BLanduseDecision%7D%5Bl%2Ci%5D%20%2B%20%5Ctext%7BLanduseDecision%7D%5Bl%2Cj%5D%20-%201%20%5Cquad%20%5Cforall%20l%20%5Cin%20%5Ctext%7BLanduses%7D%2C%20%28i%2Cj%29%20%5Cin%20E%20%5Cend%7Baligned%7D "\begin{aligned} \text{Contiguity}[l,i,j] &\leq \text{LanduseDecision}[l,i] \quad \forall l \in \text{Landuses}, (i,j) \in E \\ \text{Contiguity}[l,i,j] &\leq \text{LanduseDecision}[l,j] \quad \forall l \in \text{Landuses}, j) \in E \\ \text{Contiguity}[l,i,j] &\geq \text{LanduseDecision}[l,i] + \text{LanduseDecision}[l,j] - 1 \quad \forall l \in \text{Landuses}, (i,j) \in E \end{aligned}")
+
+#### 2.3.0.2 Abstract
+
+This model captures the complexity of agricultural land selection for
+conservation biodiversity, incorporating multiple ecological and
+economic factors. The use of binary variables and constraints ensures a
+feasible and practical solution that aligns with Denmark’s conservation
+goals.

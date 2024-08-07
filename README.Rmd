@@ -196,3 +196,36 @@ $\begin{aligned}
 \text{maximize } & \sum_{l \in \text{Landuses}, c \in \text{Cells}} \text{LanduseDecision}[l,c] \times \text{Richness}[l,c] \times \text{PhyloDiversity}[l,c] \times \text{CanChange}[c] \\
 & + \text{SpatialContiguityBonus} \times \sum_{(i,j) \in E, l \in \text{Landuses}} \left( \text{Contiguity}[l,i,j] \times \text{CanChange}[i] \times \text{CanChange}[j] + \text{Existingnature}[l,i] \times \text{LanduseDecision}[l,j] \times \text{CanChange}[j] \right)
 \end{aligned}$
+
+##### Restrictions
+
+1. **Proportional Use**: Guarantees only one land use per cell.
+
+$\sum_{l \in \text{Landuses}} \text{LanduseDecision}[l,c] \leq 1 \quad \forall c \in \text{Cells}$
+
+2. **Minimum Land Use Area Requirement**: Guarantees a minimum area for each land use type (excluding agriculture).
+
+$\sum_{c \in \text{Cells}} \text{LanduseDecision}[l,c] \geq \text{MinLan} \quad \forall l \in \text{Landuses} \setminus \{ \text{'Ag'} \}$
+
+3. **No Agriculture**: Prevents selection of agricultural land use.
+
+$\text{LanduseDecision}[\text{'Ag'}, c] = 0 \quad \forall c \in \text{Cells}$ 
+
+4. **Minimum Forest Area**: Guarantee a minimum area for forest land uses.
+
+$\sum _{c \in \text{Cells}, l \in \text{ForestLanduses}} \text{LanduseDecision}[l,c] \geq \text{MinFor}$ 
+
+5. **Minimum Wetland Area**: Ensures a minimum area for wetland uses.
+
+$\sum _{c \in \text{Cells}, l \in \text{WetLanduses}} \text{LanduseDecision}[l,c] \geq \text{MinWet}$ 
+
+6. **Budget Constraint**: Limits the total cost of the transitions budget.
+
+$\sum _{l \in \text{Landuses}, c \in \text{Cells}} \text{LanduseDecision}[l,c] \times \text{TransitionCost}[l,c] = b$ 
+7. **Define contiguity**: defines contiguity relationships.
+
+$\begin{aligned} \text{Contiguity}[l,i,j] &\leq \text{LanduseDecision}[l,i] \quad \forall l \in \text{Landuses}, (i,j) \in E \\ \text{Contiguity}[l,i,j] &\leq \text{LanduseDecision}[l,j] \quad \forall l \in \text{Landuses}, j) \in E \\ \text{Contiguity}[l,i,j] &\geq \text{LanduseDecision}[l,i] + \text{LanduseDecision}[l,j] - 1 \quad \forall l \in \text{Landuses}, (i,j) \in E \end{aligned}$ 
+
+#### Abstract 
+
+This model captures the complexity of agricultural land selection for conservation biodiversity, incorporating multiple ecological and economic factors. The use of binary variables and constraints ensures a feasible and practical solution that aligns with Denmark’s conservation goals.
