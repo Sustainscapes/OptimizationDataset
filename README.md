@@ -8,6 +8,8 @@ for Denmark)
     - [1.2.1 Modelo de optimización para la planificación de la
       conservación en
       Dinamarca](#121-modelo-de-optimización-para-la-planificación-de-la-conservación-en-dinamarca)
+  - [1.3 Bases de datos](#13-bases-de-datos)
+  - [1.4 Escalamiento del problema](#14-escalamiento-del-problema)
 - [2 English](#2-english)
   - [2.1 Disclaimer](#21-disclaimer)
   - [2.2 Problem summary](#22-problem-summary)
@@ -35,12 +37,13 @@ responsables de ningún problema o daño que pueda surgir de su uso.
 
 ## 1.2 Resumen del problema
 
-En respuesta a la nueva ley europea de restauración, que exige la
-recuperación del 20% de la naturaleza degradada, nuestro proyecto se
-centra en optimizar dos aspectos clave: identificar las áreas
-prioritarias para la restauración en Europa y determinar los tipos de
-ecosistemas que deben ser restaurados en cada área. Dinamarca se
-utilizará como caso de estudio.
+La Estrategia Europea de Biodiversidad para 2030 y la nueva ley europea
+de restauración exigen que el 30 % de las tierras estén protegidas y que
+el 20 % de la naturaleza degradada se restaure para 2030. Nuestro
+proyecto se centra en optimizar dos aspectos clave: identificar las
+áreas prioritarias para la protección y restauración en Europa y
+determinar los tipos de ecosistemas que deben restaurarse en cada área.
+Dinamarca se utilizará como estudio de caso.
 
 Nuestra institución ha desarrollado modelos que priorizan la
 conectividad ecológica, la conservación de la biodiversidad y la
@@ -79,12 +82,13 @@ naturaleza, organizados en tres ejes de transformación:
 - Abierto-Húmedo-Rico
 - Abierto-Húmedo-Pobre
 
-Estos tipos de ambientes se definen por tres factores principales: la
-transformación en bosque o abierto, determinada por la gestión; seco o
-húmedo, que depende principalmente de la topografía; y rico o pobre,
-relacionado con los nutrientes en el suelo. El objetivo es maximizar la
-biodiversidad, garantizar la conectividad espacial y cumplir con los
-objetivos específicos de uso de suelo.
+Este tipo de ambientes se definen por tres factores principales: (1)
+transformación en bosque o abierto, determinada por la gestión; (2) seco
+o húmedo, que depende principalmente de la topografía o la restauración
+activa de humedales; y (3) rico o pobre, que está relacionado con los
+nutrientes del suelo. El objetivo es maximizar la biodiversidad,
+garantizar la conectividad espacial y cumplir con objetivos específicos
+de uso de suelo.
 
 Dentro de las restricciones de uso del suelo, se incluyen 250,000
 hectáreas de nuevos bosques prometidas por el nuevo gobierno, que pueden
@@ -192,6 +196,38 @@ factores ecológicos y económicos. El uso de variables binarias y
 restricciones garantiza una solución factible y práctica que se alinea
 con los objetivos de conservación de Dinamarca.
 
+## 1.3 Bases de datos
+
+En la figura <a href="#fig:usoactual">1.1</a> y tabla
+<a href="#tab:tablaarea">1.1</a> vemos que hay mas del 70% de Dinamarca
+cubierto en agricultura actualmente, debido a esto
+
+<div class="figure">
+
+<img src="README_files/figure-gfm/usoactual-1.png" alt="Usos de suelos relevantes actualmente en Dinamarca"  />
+
+<p class="caption">
+
+<span id="fig:usoactual"></span>Figure 1.1: Usos de suelos relevantes
+actualmente en Dinamarca
+
+</p>
+
+</div>
+
+| Uso_de_Suelo   | Area_sq_km | Porcentaje |
+|:---------------|-----------:|-----------:|
+| Agricultura    |   33215.24 |      76.99 |
+| Abierto Humedo |    1552.80 |       3.60 |
+| Abierto Seco   |    1115.04 |       2.58 |
+| Bosque Seco    |     531.24 |       1.23 |
+| Bosque Humedo  |      42.28 |       0.10 |
+
+<span id="tab:tablaarea"></span>Table 1.1: Tabla con las áreas y
+proporciones de los usos de suelo relevantes en Dinamárca
+
+## 1.4 Escalamiento del problema
+
 # 2 English
 
 ## 2.1 Disclaimer
@@ -209,11 +245,12 @@ that may arise from its use.
 
 ## 2.2 Problem summary
 
-In response to the new European restoration law, which requires the
-recovery of 20% of degraded nature, our project focuses on optimizing
-two key aspects: identifying priority areas for restoration in Europe
-and determining the types of ecosystems that should be restored in each
-area. Denmark will be used as a case study.
+The European Biodiversity Strategy for 2030 and the new European
+restoration law require 30 % protected land and restoration of 20 %
+degraded nature by 2030. Our project focuses on optimizing two key
+aspects: identifying priority areas for protection and restoration in
+Europe and determining the types of ecosystems that should be restored
+in each area. Denmark will be used as a case study.
 
 Our institution has developed models that prioritize ecological
 connectivity, biodiversity conservation, and maximization of ecosystem
@@ -252,11 +289,12 @@ axes:
 
 ## 2.3 Problem Summary
 
-These types of environments are defined by three main factors:
-transformation into forest or open, determined by management; dry or
-wet, which depends mainly on topography; and rich or poor, related to
-nutrients in the soil. The goal is to maximize biodiversity, ensure
-spatial connectivity, and meet specific land use objectives.
+These types of environments are defined by three main factors: (1)
+transformation into forest or open, determined by management; (2) dry or
+wet, which depends mainly on topography or active wetland restoration;
+and (3) rich or poor, with is related to the nutrients in the soil. The
+goal is to maximize biodiversity, ensure spatial connectivity, and meet
+specific land use objectives.
 
 Included in the land use restrictions are 250,000 hectares of new forest
 promised by the new government, which can be wet or dry, and 140,000

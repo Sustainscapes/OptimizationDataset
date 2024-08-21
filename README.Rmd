@@ -13,8 +13,18 @@ bibliography: Biblio.bib
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>", 
+  echo = FALSE, 
+  warning=FALSE, 
+  message=FALSE, 
+  error=FALSE
 )
+
+library(terra)
+library(geodata)
+library(dplyr)
+library(tidyterra)
+library(ggplot2)
 ```
 
 # Español
@@ -26,7 +36,7 @@ Los usuarios tienen permitido utilizar el conjunto de datos solo para estos fine
 
 ## Resumen del problema
 
-En respuesta a la nueva ley europea de restauración, que exige la recuperación del 20% de la naturaleza degradada, nuestro proyecto se centra en optimizar dos aspectos clave: identificar las áreas prioritarias para la restauración en Europa y determinar los tipos de ecosistemas que deben ser restaurados en cada área. Dinamarca se utilizará como caso de estudio.
+La Estrategia Europea de Biodiversidad para 2030 y la nueva ley europea de restauración exigen que el 30 % de las tierras estén protegidas y que el 20 % de la naturaleza degradada se restaure para 2030. Nuestro proyecto se centra en optimizar dos aspectos clave: identificar las áreas prioritarias para la protección y restauración en Europa y determinar los tipos de ecosistemas que deben restaurarse en cada área. Dinamarca se utilizará como estudio de caso.
 
 Nuestra institución ha desarrollado modelos que priorizan la conectividad ecológica, la conservación de la biodiversidad y la maximización de los servicios ecosistémicos. Sin embargo, reconocemos que estos modelos pueden ser perfeccionados. Por ello, buscamos mejorar la eficiencia y el alcance de nuestro algoritmo de optimización mediante la aplicación de técnicas avanzadas de análisis espacial y el desarrollo de enfoques innovadores para la restauración ecológica.
 
@@ -48,7 +58,7 @@ El objetivo es proteger el 30% de la naturaleza en Dinamarca optimizando la sele
 * Abierto-Húmedo-Rico
 * Abierto-Húmedo-Pobre
 
-Estos tipos de ambientes se definen por tres factores principales: la transformación en bosque o abierto, determinada por la gestión; seco o húmedo, que depende principalmente de la topografía; y rico o pobre, relacionado con los nutrientes en el suelo. El objetivo es maximizar la biodiversidad, garantizar la conectividad espacial y cumplir con los objetivos específicos de uso de suelo.
+Este tipo de ambientes se definen por tres factores principales: (1) transformación en bosque o abierto, determinada por la gestión; (2) seco o húmedo, que depende principalmente de la topografía o la restauración activa de humedales; y (3) rico o pobre, que está relacionado con los nutrientes del suelo. El objetivo es maximizar la biodiversidad, garantizar la conectividad espacial y cumplir con objetivos específicos de uso de suelo.
 
 Dentro de las restricciones de uso del suelo, se incluyen 250,000 hectáreas de nuevos bosques prometidas por el nuevo gobierno, que pueden ser húmedos o secos, y 140,000 hectáreas de áreas húmedas, que pueden ser abiertas o bosques.
 
@@ -126,6 +136,35 @@ $\begin{aligned}
 
 Este modelo captura la complejidad de la selección de tierras agrícolas para la conservación de la biodiversidad, incorporando múltiples factores ecológicos y económicos. El uso de variables binarias y restricciones garantiza una solución factible y práctica que se alinea con los objetivos de conservación de Dinamarca.
 
+## Bases de datos
+
+
+
+```{r leerUsoDeSuelo, echo = FALSE}
+UsoSueloActual <- terra::rast("LanduseDataset.tif")
+
+DK <- geodata::gadm(country = "Denmark", level = 0, path = getwd()) |> 
+  terra::project(terra::crs(UsoSueloActual))
+
+Area_DK <- terra::expanse(DK, unit = "km")
+
+Table_area <- UsoSueloActual |> terra::freq() |> dplyr::mutate(Area_sq_km = (count*res(UsoSueloActual)[1]*res(UsoSueloActual)[2])*10^-6, Porcentaje = round(100*(Area_sq_km/Area_DK), 2)) |> dplyr::rename(Uso_de_Suelo = value) |> dplyr::select(-count, - layer) |> dplyr::arrange(desc(Area_sq_km))
+```
+
+En la figura \@ref(fig:usoactual) y tabla \@ref(tab:tablaarea) vemos que hay mas del 70% de Dinamarca cubierto en agricultura actualmente, debido a esto
+
+```{r usoactual, fig.cap= "Usos de suelos relevantes actualmente en Dinamarca", echo = FALSE, warning=FALSE, message=FALSE, error=FALSE}
+ggplot() + geom_spatvector(data = DK) + geom_spatraster(data = UsoSueloActual) + scale_fill_discrete(na.translate = F) + theme_bw()
+```
+
+```{r tablaarea}
+knitr::kable(Table_area, digits = 2, caption = "Tabla con las áreas y proporciones de los usos de suelo relevantes en Dinamárca")
+```
+
+
+
+## Escalamiento del problema
+
 # English
 
 ## Disclaimer
@@ -134,7 +173,7 @@ This repository contains a draft dataset that is currently under development and
 
 ## Problem summary
 
-In response to the new European restoration law, which requires the recovery of 20% of degraded nature, our project focuses on optimizing two key aspects: identifying priority areas for restoration in Europe and determining the types of ecosystems that should be restored in each area. Denmark will be used as a case study.
+The European Biodiversity Strategy for 2030 and the new European restoration law require 30 % protected land and restoration of 20 % degraded nature by 2030. Our project focuses on optimizing two key aspects: identifying priority areas for protection and restoration in Europe and determining the types of ecosystems that should be restored in each area. Denmark will be used as a case study.
 
 Our institution has developed models that prioritize ecological connectivity, biodiversity conservation, and maximization of ecosystem services. However, we recognize that these models can be refined. Therefore, we seek to improve the efficiency and scope of our optimization algorithm by applying advanced spatial analysis techniques and developing innovative approaches to ecological restoration.
 
@@ -157,7 +196,7 @@ The aim is to protect 30% of nature in Denmark by optimising the selection of ag
 
 ## Problem Summary
 
-These types of environments are defined by three main factors: transformation into forest or open, determined by management; dry or wet, which depends mainly on topography; and rich or poor, related to nutrients in the soil. The goal is to maximize biodiversity, ensure spatial connectivity, and meet specific land use objectives.
+These types of environments are defined by three main factors: (1) transformation into forest or open, determined by management; (2) dry or wet, which depends mainly on topography or active wetland restoration; and (3) rich or poor, with is related to the nutrients in the soil. The goal is to maximize biodiversity, ensure spatial connectivity, and meet specific land use objectives.
 
 Included in the land use restrictions are 250,000 hectares of new forest promised by the new government, which can be wet or dry, and 140,000 hectares of wet areas, which can be open or forest.
 
