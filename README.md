@@ -226,6 +226,12 @@ actualmente en Dinamarca
 <span id="tab:tablaarea"></span>Table 1.1: Tabla con las áreas y
 proporciones de los usos de suelo relevantes en Dinamárca
 
+Las bases de datos y algoritmos se encuentran en el repositorio, en la
+carpeta `Alhorithms` se encuentra el archivo `linearized.mod` que tiene
+el modelo en el formato de AMPL para resolver el problema, en la carpeta
+`ScalingProblems` estan los problemas desde 1 a 10 comunas en formato
+.dat para AMPL y en
+
 ## 1.4 Escalamiento del problema
 
 # 2 English
